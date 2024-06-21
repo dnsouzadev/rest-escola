@@ -19,9 +19,7 @@ class Curso(models.Model):
     codigo_curso = models.CharField(max_length=10)
     descricao = models.CharField(max_length=100)
     nivel = models.CharField(max_length=1, choices=NIVEL, blank=False, null=False, default='B')
-    data_inicio = models.DateField()
-    data_termino = models.DateField()
-    alunos = models.ManyToManyField(Aluno)
+
 
     def __str__(self):
         return self.descricao

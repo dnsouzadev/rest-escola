@@ -1,23 +1,19 @@
+from rest_framework import viewsets
 from django.http import JsonResponse
+from .serializer import AlunoSerializer, CursoSerializer
+from .models import Aluno, Curso
 
 # Create your views here.
-def alunos(request):
-    try:
-        if request.method == 'GET':
-            alunos = [
-                {
-                    'id': 1,
-                    'nome': 'João',
-                    'idade': 20,
-                },
-                {
-                    'id': 2,
-                    'nome': 'Maria',
-                    'idade': 22,
-                }
-            ]
-            return JsonResponse({'alunos': alunos})
-        else:
-            return JsonResponse({'error': 'Método inválido'}, status=405)
-    except Exception as e:
-        return JsonResponse({'error': str(e)}, status=500)
+class AlunosViewSet(viewsets.ModelViewSet):
+    """
+    A simple ViewSet for viewing.
+    """
+    queryset = Aluno.objects.all()
+    serializer_class = AlunoSerializer
+
+class CursosViewSet(viewsets.ModelViewSet):
+    """
+    A simple ViewSet for viewing.
+    """
+    queryset = Curso.objects.all()
+    serializer_class = CursoSerializer
