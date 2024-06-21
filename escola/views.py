@@ -1,6 +1,8 @@
 from rest_framework import viewsets, generics
-from django.http import JsonResponse
-from .serializer import AlunoSerializer, CursoSerializer, MatriculaSerializer, ListaMatriculasAlunoSerializer
+from rest_framework.authentication import BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
+
+from .serializer import *
 from .models import Aluno, Curso, Matricula
 
 # Create your views here.
@@ -10,6 +12,8 @@ class AlunosViewSet(viewsets.ModelViewSet):
     """
     queryset = Aluno.objects.all()
     serializer_class = AlunoSerializer
+    authentication_classes = [BasicAuthentication]
+    permission_classes = [IsAuthenticated]
 
 class CursosViewSet(viewsets.ModelViewSet):
     """
@@ -17,6 +21,8 @@ class CursosViewSet(viewsets.ModelViewSet):
     """
     queryset = Curso.objects.all()
     serializer_class = CursoSerializer
+    authentication_classes = [BasicAuthentication]
+    permission_classes = [IsAuthenticated]
 
 
 class MatriculasViewSet(viewsets.ModelViewSet):
@@ -25,6 +31,8 @@ class MatriculasViewSet(viewsets.ModelViewSet):
     """
     queryset = Matricula.objects.all()
     serializer_class = MatriculaSerializer
+    authentication_classes = [BasicAuthentication]
+    permission_classes = [IsAuthenticated]
 
 
 class ListaMatriculasAno(generics.ListAPIView):
@@ -37,3 +45,19 @@ class ListaMatriculasAno(generics.ListAPIView):
         return queryset
 
     serializer_class = ListaMatriculasAlunoSerializer
+    authentication_classes = [BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+
+
+class ListaAlunosMatriculados(generics.ListAPIView):
+    """
+    Listing all students
+    """
+
+    def get_queryset(self):
+        queryset = Matricula.objects.filter(curso_id=self.kwargs['pk'])
+        return queryset
+
+    serializer_class = ListaAlunosMatriculadosSerializer
+    authentication_classes = [BasicAuthentication]
+    permission_classes = [IsAuthenticated]
